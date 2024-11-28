@@ -1,0 +1,16 @@
+Step 1: Check the browser supports the Geolocation API
+
+Step 2: Set the options for high accuracy , a timeout of 5 seconds and no caching 
+
+Step 3: Use wathc Position to get the current position of the device
+
+Step 4: Emit the latitude and longitude to the server via socket  with "send-location ". Log any errors to the console
+
+Step 5: Intitialize a map centered  at coordinates (0,0) with a zoom level of 15  using Leaflet.js add OpenStreetMap tiles to the map
+
+Step 6: Create an empty object markers
+
+Step 7: When we receiving location data via socket , extract id ,latitude and longitude and the center the map 
+on the  new coordinates
+
+Step 8: If the markers for the id exists ,update the marker position to the new coordinates otherwise create a new marker at the given coordinates  and add it to given map. When a user disconnects , remove their marker from the map and delete it from markers
