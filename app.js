@@ -1,21 +1,33 @@
-const express=require('express');
-const app=express();
-const http=require('http');
+const express = require('express');
+const app = express();
+const http = require('http');
 const path = require('path');
+const socketio = require('socket.io');
 
-const socketio=require('socket.io');
+const server = http.createServer(app);
+const io = socketio(server);
 
-const server=http.createServer(app);
+app.set('view engine', 'ejs');
+app.use(express.static(path.join(__dirname, 'public')));
 
-const io=socketio(server);
+io.on('connection', function(socket) {
+    socket.on("send-location",function(data){
+        io.emit("receive-location",{id:socket.id , ...data});
+    })
 
-app.get('/',(req,res)=>{
-    res.send('Hello World');
+    socket.on("disconnect",()=>{
+        io.emit("user-disconnected",socket.id);
+    })
+    // console.log("New WS Connection");
+});
+app.get('/', (req, res) => {
+    res.render("index");
 });
 
-app.set('view engine','ejs');
-app.set(express.static(path.join(__dirname,'public')));
 
-server.listen(3000,()=>{
+
+
+
+server.listen(3000, () => {
     console.log(`Server is running on port ${3000}`);
-})   
+});
